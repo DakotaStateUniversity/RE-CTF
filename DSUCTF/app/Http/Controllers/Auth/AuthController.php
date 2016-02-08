@@ -52,6 +52,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+            'IsStudent' => '',
         ]);
     }
 
@@ -63,9 +64,15 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+        $val = false;
+        if(array_key_exists('IsStudent',$data))
+        {
+          $val = true;
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'IsStudent' => $val,
             'password' => bcrypt($data['password']),
         ]);
     }
