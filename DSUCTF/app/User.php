@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','IsStudent',
+        'name', 'email', 'password','IsStudent','IsAdmin',
     ];
 
     /**
@@ -23,4 +23,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getAdmin()
+    {
+      $status = $this->IsAdmin;
+      if($status == 1)
+        return true;
+      return false;
+    }
 }
