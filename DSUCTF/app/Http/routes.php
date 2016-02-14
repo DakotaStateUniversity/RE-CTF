@@ -34,6 +34,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
+
+    Route::get('/ajax/category','CategoryController@index');
+    Route::any('/ajax/category/update','CategoryController@update');
+    Route::any('/ajax/category/modify','CategoryController@modify');
+    Route::any('/ajax/category/destroy','CategoryController@destroy');
+    Route::any('/ajax/category/store','CategoryController@store');
 });
 
 Route::group(['middleware' => 'web'], function() {

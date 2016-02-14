@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.controlpanel')
 
 @section('content')
 <div class="container">
@@ -12,27 +12,21 @@
                     <div class="panel panel-primary">
                       <div class="panel-heading">Manage Categories</div>
                       <div class="panel-body">
-                        <table class="table">
+                        <div>Click on a category to modify its name.<br>Drag and drop categories to change their display order.</div>
+                        <table class="table" >
                           <tr>
                             <th>Categories</th>
                             <th></th>
                           </tr>
-                          <tr>
-                            <td>Reverse Engineering</td>
-                            <td><span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-remove"></span></td>
-                          </tr>
-                          <tr>
-                            <td>Networking</td>
-                            <td><span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-remove"></span></td>
-                          </tr>
-                          <tr>
-                            <td>SQL Injection</td>
-                            <td><span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-remove"></span></td>
-                          </tr>
+                          <tbody id="sortable">
+
+                          </tbody>
                         </table>
                         <label for="catname">Name:</label>
                         <input id="catname" type="text" class="text">
-                        <button type="button" class="btn btn-primary btn-sm">Create category</button>
+                        <button type="button" onclick="addCategory();" class="btn btn-primary btn-sm">Create category</button>
+                        <br>
+
                       </div>
                     </div>
                 </div>
@@ -40,4 +34,5 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/js/admin.js"></script>
 @endsection
