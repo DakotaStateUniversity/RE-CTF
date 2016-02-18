@@ -25,6 +25,7 @@ class CategoryController extends Controller
         return json_encode($categories);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -53,7 +54,7 @@ class CategoryController extends Controller
       if($currentcount == 0)
         $currentcount = 1;
       DB::table('category')->insert(array('name'=>$request->input('name'), 'level' => $currentcount));
-      
+
       return 1;
     }
 
@@ -137,6 +138,10 @@ class CategoryController extends Controller
         DB::table('category')
         ->where('category_id', $request->input('catid'))
         ->delete();
+
+        DB::table('challenge')
+        ->where('category_id', $request->input('catid'))
+        ->update(array('category_id' => 0));
 
         return 1;
 

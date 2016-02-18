@@ -12,6 +12,8 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-      "/ajax/category/modify"
+      "/ajax/category/modify",
+      "/ajax/challenge/store",
+      "/ajax/challenge/modify"
     ];
 }

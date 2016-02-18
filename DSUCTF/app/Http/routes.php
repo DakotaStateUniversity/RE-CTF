@@ -35,11 +35,23 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
 
+    // Category
     Route::get('/ajax/category','CategoryController@index');
     Route::any('/ajax/category/update','CategoryController@update');
     Route::any('/ajax/category/modify','CategoryController@modify');
     Route::any('/ajax/category/destroy','CategoryController@destroy');
     Route::any('/ajax/category/store','CategoryController@store');
+
+    // Challenge
+    Route::get('/ajax/challenge','ChallengeController@index');
+    Route::any('/ajax/challenge/data','ChallengeController@data');
+
+    Route::any('/ajax/challenge/store','ChallengeController@store');
+    Route::any('/ajax/challenge/modify_name','ChallengeController@modify_name');
+    Route::any('/ajax/challenge/modify','ChallengeController@modify');
+    Route::any('/ajax/challenge/destroy','ChallengeController@destroy');
+
+
 });
 
 Route::group(['middleware' => 'web'], function() {
