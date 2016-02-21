@@ -44,7 +44,10 @@ Route::group(['middleware' => 'web'], function () {
 
     // Challenge
     Route::get('/ajax/challenge','ChallengeController@index');
+    Route::get('/ajax/challenge/listall','ChallengeController@listall');
     Route::any('/ajax/challenge/data','ChallengeController@data');
+    Route::any('/ajax/challenge/info','ChallengeController@info');
+    Route::any('/ajax/challenge/attempt','ChallengeController@attempt');
 
     Route::any('/ajax/challenge/store','ChallengeController@store');
     Route::any('/ajax/challenge/modify_name','ChallengeController@modify_name');

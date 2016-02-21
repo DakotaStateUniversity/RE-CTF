@@ -67,7 +67,7 @@ function popCategory() {
                     stop: function(event, ui) {
                         var start_pos = ui.item.data('start_pos');
                         if (start_pos != ui.item.index()) {
-                            // the item got moved
+                            // the item position has been changed
                             var neworder = [];
                             var i = 0;
                             $("#sortable > tr").each(function() {
@@ -190,6 +190,7 @@ function modifyChallenge()
     success: function(response)
     {
       console.log(response);
+      $("#modalChallenge").modal("toggle");
       popChallenge();
 
     }

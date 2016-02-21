@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+//namespace Carbon\Carbon;
 
 use Illuminate\Http\Request;
 use DB;
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class ChallengeController extends Controller
 {
@@ -19,7 +21,7 @@ class ChallengeController extends Controller
     //It is important that this remains admin-only
     public function index()
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
         $challenges = DB::table('challenge')
@@ -27,11 +29,89 @@ class ChallengeController extends Controller
         ->get();
         return json_encode($challenges);
     }
+
+    //Attempt to solve a challenge
+    public function attempt(Request $request)
+    {
+      if(!Auth::Check()){ return -2;}
+      if(empty($request->input('challenge_id')) || empty($request->input('answer')) )
+        return 0;
+
+      // Get the related challenge
+      $challenge = DB::table('challenge')
+      ->where('challenge_id','=',$request->input('challenge_id'))
+      ->first();
+
+      $currentTime = Carbon::now()->toDateTimeString();
+      if($challenge->key == $request->input('answer'))
+      {
+        DB::table('attempt_log')->insert(
+        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'result' => 1]
+        );
+        return "You have successfully completed the challenge!";
+      }
+      else {
+        DB::table('attempt_log')->insert(
+        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'result' => 0]
+        );
+        return "Your answer did not match the flag.";
+      }
+
+
+
+    }
+
+    //public method of retrieving challenge list, does not reveal key
+    public function listall()
+    {
+      if(!Auth::Check()){ return -2;}
+      $challenges = DB::table('challenge')
+      ->orderBy('value')
+      ->get();
+      foreach($challenges as $challenge)
+      {
+        unset($challenge->key);
+      }
+      return json_encode($challenges);
+    }
+
+    public function info(Request $request)
+    {
+      if(!Auth::Check()){ return -2;}
+      if(empty($request->input('challenge_id')))
+        return 0;
+
+      $challenge = DB::table('challenge')
+      ->where('challenge_id','=', $request->input('challenge_id'))
+      ->first();
+
+      unset($challenge->key);
+
+      $relcat = DB::table('category')
+      ->where('category_id','=',$challenge->category_id)
+      ->first();
+
+      $attempts = DB::table('attempt_log')
+      ->where('user_id','=',Auth::user()->id)
+      ->get();
+      $completed = 0;
+      foreach($attempts as $attempt)
+      {
+        if($attempt->result == 1)
+          $completed = 1;
+      }
+
+      $challenge->category_name = $relcat->name;
+      $challenge->completed = $completed;
+
+      return json_encode($challenge);
+
+    }
     //This retrieves all information about the challenge, INCLUDING the key/flag
     //It is important that this remains admin-only
     public function data(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if(empty($request->input('challenge_id')))
@@ -63,7 +143,7 @@ class ChallengeController extends Controller
      */
     public function store(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if( empty($request->input('challenge_name')) || empty($request->input('value')) || empty($request->input('key')) || empty($request->input('description')) || ($request->input('category_id') != 0 && empty($request->input('category_id'))) )
@@ -106,7 +186,7 @@ class ChallengeController extends Controller
 
     public function modify_name(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if( empty($request->input('chalid')) || empty($request->input('name')) )
@@ -121,7 +201,7 @@ class ChallengeController extends Controller
 
     public function modify(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if( empty($request->input('challenge_id')) || empty($request->input('challenge_name')) || empty($request->input('value')) || empty($request->input('key')) || empty($request->input('description')) || ($request->input('category_id') != 0 && empty($request->input('category_id'))) )
@@ -141,7 +221,7 @@ class ChallengeController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::check();
+        if(!Auth::Check()){ return -2;}
         if(!Auth::user()->getAdmin())
           return -1;
         if(empty($request->input('challenge_id')))

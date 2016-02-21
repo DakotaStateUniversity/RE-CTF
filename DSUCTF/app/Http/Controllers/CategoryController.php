@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        Auth::check();
+        if(!Auth::Check()){ return -2;}
         $categories = DB::table('category')
         ->orderBy('level')
         ->get();
@@ -44,7 +44,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if(empty($request->input('name')))
@@ -89,7 +89,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if($request->input('data') == null || $request->input('data') == "[]")
@@ -108,7 +108,7 @@ class CategoryController extends Controller
 
     public function modify(Request $request)
     {
-      Auth::check();
+      if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
       if( empty($request->input('catid')) || empty($request->input('name')) )
@@ -129,7 +129,7 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::check();
+        if(!Auth::Check()){ return -2;}
         if(!Auth::user()->getAdmin())
           return -1;
         if(empty($request->input('catid')))
