@@ -8,6 +8,9 @@ $(document).ready(function() {
     popCategory();
     popChallenge();
     setTimeout(finalizePop, 250);
+    setTimeout(finalizePop, 500);
+    setTimeout(finalizePop, 800);
+    setTimeout(finalizePop, 1000);
     setTimeout(function(){
       if(totalCat == hiddenCat)
       {
