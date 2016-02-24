@@ -44,6 +44,7 @@ class ChallengeController extends Controller
 
       $challengesuccess = DB::table('attempt_log')
       ->where('challenge_id','=',$challenge->challenge_id)
+      ->where('user_id','=', Auth::user()->id)
       ->where('result','=',1)
       ->count();
       if($challengesuccess > 0)
