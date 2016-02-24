@@ -6,18 +6,6 @@ var hiddenCat = 0;
 $(document).ready(function() {
     $("#modalnotice").hide();
     popCategory();
-    popChallenge();
-    //setTimeout(finalizePop, 250);
-    setTimeout(finalizePop, 500);
-    //setTimeout(finalizePop, 800);
-    //setTimeout(finalizePop, 1000);
-    setTimeout(function(){
-      if(totalCat == hiddenCat)
-      {
-        popCategory();
-        popChallenge();
-      }
-    }, 500);
 });
 
 function popCategory() {
@@ -37,6 +25,7 @@ function popCategory() {
                     itemList[response[i].category_id] = 0;
                 }
             }
+	popChallenge();
         }
     });
 }
@@ -58,7 +47,7 @@ function popChallenge() {
                 $("ul[data-catid='" + response[i].category_id + "']").append("<button type='button' onclick='loadChallenge("+response[i].challenge_id+")' data-chalid=" + response[i].challenge_id + " data-catid=" + response[i].category_id + " class='list-group-item'><span class='badge'>" + response[i].value + "</span>" + response[i].challenge_name + "</button>");
 
             }
-            //finalizePop();
+            finalizePop();
         }
     })
     //finalizePop(); // Hide categories that do not have any challenges
