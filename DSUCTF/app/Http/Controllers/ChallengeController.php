@@ -35,24 +35,33 @@ class ChallengeController extends Controller
     {
       if(!Auth::Check()){ return -2;}
       if(empty($request->input('challenge_id')) || empty($request->input('answer')) )
-        return 0;
+        return "Please type in a key/flag.";
 
       // Get the related challenge
       $challenge = DB::table('challenge')
       ->where('challenge_id','=',$request->input('challenge_id'))
       ->first();
 
+      $challengesuccess = DB::table('attempt_log')
+      ->where('challenge_id','=',$challenge->challenge_id)
+      ->where('result','=',1)
+      ->count();
+      if($challengesuccess > 0)
+      {
+        return "You have already completed this challenge.";
+      }
+
       $currentTime = Carbon::now()->toDateTimeString();
       if($challenge->key == $request->input('answer'))
       {
         DB::table('attempt_log')->insert(
-        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'result' => 1]
+        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 1]
         );
-        return "You have successfully completed the challenge!";
+        return "You have successfully completed this challenge!";
       }
       else {
         DB::table('attempt_log')->insert(
-        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'result' => 0]
+        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 0]
         );
         return "Your answer did not match the flag.";
       }
@@ -71,6 +80,17 @@ class ChallengeController extends Controller
       foreach($challenges as $challenge)
       {
         unset($challenge->key);
+        $attempts = DB::table('attempt_log')
+              ->where('user_id','=',Auth::user()->id)
+              ->where('challenge_id','=',$challenge->challenge_id)
+              ->get();
+        $completed = 0;
+        foreach($attempts as $attempt)
+        {
+          if($attempt->result == 1)
+            $completed = 1;
+        }
+        $challenge->completed = $completed;
       }
       return json_encode($challenges);
     }
@@ -86,13 +106,19 @@ class ChallengeController extends Controller
       ->first();
 
       unset($challenge->key);
+      $name = "Miscellaneous";
+      if($challenge->category_id != 0 )
+      {
+        $relcat = DB::table('category')
+        ->where('category_id','=',$challenge->category_id)
+        ->first();
+        $name = $relcat->name;
+      }
 
-      $relcat = DB::table('category')
-      ->where('category_id','=',$challenge->category_id)
-      ->first();
 
       $attempts = DB::table('attempt_log')
       ->where('user_id','=',Auth::user()->id)
+      ->where('challenge_id','=',$request->input('challenge_id'))
       ->get();
       $completed = 0;
       foreach($attempts as $attempt)
@@ -101,7 +127,7 @@ class ChallengeController extends Controller
           $completed = 1;
       }
 
-      $challenge->category_name = $relcat->name;
+      $challenge->category_name = $name;
       $challenge->completed = $completed;
 
       return json_encode($challenge);

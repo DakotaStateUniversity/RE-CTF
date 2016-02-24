@@ -25,6 +25,7 @@
           <h4 class="modal-title" id="myModalLabel"><span id="challengeName"></span></h4>
         </div>
         <div class="modal-body">
+          <div id="modalnotice" class="alert alert-success" role="alert">...</div>
           <span id="cat">The category for this challenge is <span id="category"></span></span>
           <br>
           <br>
@@ -52,6 +53,10 @@
 
 
         </div>
+        <div class="col-md-12">
+          Challenges not loading? Try refreshing the page.
+        </div>
+
     </div>
 </div>
 @endsection
