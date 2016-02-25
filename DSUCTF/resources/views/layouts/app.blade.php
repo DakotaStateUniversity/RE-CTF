@@ -48,18 +48,15 @@
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
-              @if (Auth::guest())
-              @else
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
-                    <li><a href="{{ url('/scoreboard') }}">Scoreboard</a></li>
-                    @if (Auth::user()->IsAdmin==1)
-                      <li><a href="{{ url('/admin')}}">Control Panel</a></li>
-                    @endif
-                </ul>
+              <ul class="nav navbar-nav">
+              @if(!Auth::guest())
+                <li><a href="{{ url('/home') }}">Home</a></li>
+                @if (Auth::user()->IsAdmin==1)
+                  <li><a href="{{ url('/admin')}}">Control Panel</a></li>
+                @endif
               @endif
-
+              <li><a href="{{ url('/scoreboard') }}">Scoreboard</a></li>
+            </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->

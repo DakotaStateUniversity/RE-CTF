@@ -19,6 +19,11 @@ Route::get('/debug', function() {
   return view('debug');
 });
 
+// Scoreboard
+Route::get('/scoreboard','ScoreController@scoreview');
+Route::get('/ajax/score/board', 'ScoreController@scoreboard');
+Route::get('/ajax/score/total', 'ScoreController@totalscore');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -54,10 +59,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('/ajax/challenge/modify','ChallengeController@modify');
     Route::any('/ajax/challenge/destroy','ChallengeController@destroy');
 
-    // Scoreboard
-    Route::get('/scoreboard','ScoreController@scoreview');
-    Route::get('/ajax/score/board', 'ScoreController@scoreboard');
-    Route::get('/ajax/score/total', 'ScoreController@totalscore');
+
 
 
 });
