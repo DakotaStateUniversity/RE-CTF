@@ -53,6 +53,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Home</a></li>
+                    <li><a href="{{ url('/scoreboard') }}">Scoreboard</a></li>
                     @if (Auth::user()->IsAdmin==1)
                       <li><a href="{{ url('/admin')}}">Control Panel</a></li>
                     @endif
