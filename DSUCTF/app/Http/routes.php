@@ -19,10 +19,7 @@ Route::get('/debug', function() {
   return view('debug');
 });
 
-// Scoreboard
-Route::get('/scoreboard','ScoreController@scoreview');
-Route::get('/ajax/score/board', 'ScoreController@scoreboard');
-Route::get('/ajax/score/total', 'ScoreController@totalscore');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +33,11 @@ Route::get('/ajax/score/total', 'ScoreController@totalscore');
 */
 
 Route::group(['middleware' => 'web'], function () {
+  // Scoreboard
+    Route::get('/scoreboard','ScoreController@scoreview');
+    Route::get('/ajax/score/board', 'ScoreController@scoreboard');
     Route::auth();
+    Route::get('/ajax/score/total', 'ScoreController@totalscore');
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
 
