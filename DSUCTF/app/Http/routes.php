@@ -59,7 +59,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('/ajax/challenge/modify_name','ChallengeController@modify_name');
     Route::any('/ajax/challenge/modify','ChallengeController@modify');
     Route::any('/ajax/challenge/destroy','ChallengeController@destroy');
-
+    Route::any('/ajax/challenge/modify_hash','ChallengeController@modify_hash');
 
 
 

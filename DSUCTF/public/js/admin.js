@@ -117,16 +117,16 @@ function popChallenge()
 {
   $("#chalsortable").html("");
   $.ajax({
-    url: '/ajax/challenge',
+    url: '/ajax/challenge/listall',
     type: 'GET',
     dataType: 'json',
     success: function (response) {
       if(response.length == 0)
-        $("#chalsortable").html("<tr><td>No categories exist.</td><td></td></tr>");
+        $("#chalsortable").html("<tr><td>No challenges exist.</td><td></td></tr>");
       else {
 
         for (i = 0; i < response.length; i++) {
-            $("#chalsortable").append("<tr data-chalid='" + response[i].challenge_id + "'><td><div id='" + response[i].challenge_id + "'>" + response[i].challenge_name + "</div></td><td style='text-align:right;'><span onclick='delChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-remove'></span><span onclick='loadChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-cog'></span></td>");
+            $("#chalsortable").append("<tr data-chalid='" + response[i].challenge_id + "'><td><div id='" + response[i].challenge_id + "'>" + response[i].challenge_name + "</div></td><td style='text-align:right;'><span onclick='delChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-remove'></span><span onclick='loadChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-cog'></span>&nbsp;<span class='glyphicon glyphicon-lock' onClick='loadHash(" + response[i].challenge_id + ")'></span></td>");
             $('#' + response[i].challenge_id).editable("/ajax/challenge/modify_name", {
                 id: 'chalid',
                 name: 'name',
@@ -158,10 +158,12 @@ function storeChallenge()
 
   });
 }
-
-function loadChallenge(challenge_id)
+  var name;
+function loadChallenge(challenge_id, flag)
 {
-  $("#modalChallenge").modal('toggle');
+
+  if(flag != 1)
+    $("#modalChallenge").modal('toggle');
   $.ajax({
     url: '/ajax/challenge/data',
     type: 'GET',
@@ -172,13 +174,40 @@ function loadChallenge(challenge_id)
         return 'No response';
       response[0].challenge_id;
       $("#modal_challenge_name").val(response[0].challenge_name);
-      $("#modal_key").val(response[0].key);
+      //$("#modal_key").val(response[0].key);
       $("#modal_category_id").val(response[0].category_id);
       $("#modal_description").val(response[0].description);
       $("#modal_value").val(response[0].value);
+      name = response[0].challenge_name;
+
+      //console.log(response[0]);
+      //var objResp = response[0];
+      //return response[0].challenge_name;
     }
   });
   currentChallenge = challenge_id;
+
+}
+
+function loadHash(challenge_id)
+{
+  loadChallenge(challenge_id, 1);
+  //console.log(name);
+  $("#hashName").html(name);
+  $("#modalHash").modal('toggle');
+
+}
+
+function modifyHash()
+{
+  $.ajax({
+    type: 'GET',
+    data: {pass: $("#hash_key").val(), chalid: currentChallenge},
+    url: '/ajax/challenge/modify_hash',
+    success: function(response) {
+      $("#modalHash").modal("toggle");
+    }
+  });
 }
 
 function modifyChallenge()
@@ -186,7 +215,7 @@ function modifyChallenge()
   $.ajax({
     url: '/ajax/challenge/modify',
     type: 'POST',
-    data: {challenge_id: currentChallenge, challenge_name: $('#modal_challenge_name').val(), value: $("#modal_value").val(), key: $("#modal_key").val(), description: $("#modal_description").val(), category_id: $("#modal_category_id").val()},
+    data: {challenge_id: currentChallenge, challenge_name: $('#modal_challenge_name').val(), value: $("#modal_value").val(), description: $("#modal_description").val(), category_id: $("#modal_category_id").val()},
     success: function(response)
     {
       console.log(response);

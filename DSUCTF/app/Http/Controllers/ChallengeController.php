@@ -21,13 +21,17 @@ class ChallengeController extends Controller
     //It is important that this remains admin-only
     public function index()
     {
+      /*
       if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
         $challenges = DB::table('challenge')
         ->orderBy('value')
         ->get();
+
         return json_encode($challenges);
+        */
+        return "Method no longer valid.";
     }
 
     //Attempt to solve a challenge
@@ -53,7 +57,7 @@ class ChallengeController extends Controller
       }
 
       $currentTime = Carbon::now()->toDateTimeString();
-      if($challenge->key == $request->input('answer'))
+      if(password_verify($request->input('answer'), $challenge->key))
       {
         DB::table('attempt_log')->insert(
         ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 1]
@@ -175,8 +179,8 @@ class ChallengeController extends Controller
         return -1;
       if( empty($request->input('challenge_name')) || empty($request->input('value')) || empty($request->input('key')) || empty($request->input('description')) || ($request->input('category_id') != 0 && empty($request->input('category_id'))) )
         return 0;
-
-      DB::table('challenge')->insert(array('challenge_name'=>$request->input('challenge_name'), 'value' => $request->input('value'), 'key' => $request->input('key'), 'description' => $request->input('description'), 'category_id' => $request->input('category_id')));
+      $key = password_hash($request->input('key'), PASSWORD_DEFAULT);
+      DB::table('challenge')->insert(array('challenge_name'=>$request->input('challenge_name'), 'value' => $request->input('value'), 'key' => $key, 'description' => $request->input('description'), 'category_id' => $request->input('category_id')));
 
       return 1;
     }
@@ -220,10 +224,24 @@ class ChallengeController extends Controller
         return 0;
 
       DB::table('challenge')
-        ->where('challenge_id',$request->input('chalid'))
+        ->where('challenge_id', '=', $request->input('chalid'))
         ->update(array('name' => $request->input('name')));
 
       return $request->input('name');
+    }
+
+    public function modify_hash(Request $request)
+    {
+      if(!Auth::Check()){ return -2;}
+      if(!Auth::user()->getAdmin())
+        return -1;
+      if( empty($request->input('chalid')) || empty($request->input('pass')) )
+        return 0;
+
+      $pass = password_hash($request->input('pass'), PASSWORD_DEFAULT);
+      DB::table('challenge')
+      ->where('challenge_id', '=', $request->input('chalid'))
+      ->update(array('key' => $pass));
     }
 
     public function modify(Request $request)
@@ -231,12 +249,12 @@ class ChallengeController extends Controller
       if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
-      if( empty($request->input('challenge_id')) || empty($request->input('challenge_name')) || empty($request->input('value')) || empty($request->input('key')) || empty($request->input('description')) || ($request->input('category_id') != 0 && empty($request->input('category_id'))) )
+      if( empty($request->input('challenge_id')) || empty($request->input('challenge_name')) || empty($request->input('value')) || empty($request->input('description')) || ($request->input('category_id') != 0 && empty($request->input('category_id'))) )
         return 0;
 
       DB::table('challenge')
       ->where('challenge_id','=',$request->input('challenge_id'))
-      ->update(array('challenge_name'=>$request->input('challenge_name'), 'value' => $request->input('value'), 'key' => $request->input('key'), 'description' => $request->input('description'), 'category_id' => $request->input('category_id')));
+      ->update(array('challenge_name'=>$request->input('challenge_name'), 'value' => $request->input('value'), 'description' => $request->input('description'), 'category_id' => $request->input('category_id')));
 
     }
 
@@ -253,6 +271,10 @@ class ChallengeController extends Controller
           return -1;
         if(empty($request->input('challenge_id')))
           return 0;
+
+        DB::table('attempt_log')
+        ->where('challenge_id', $request->input('challenge_id'))
+        ->delete();
 
         DB::table('challenge')
         ->where('challenge_id', $request->input('challenge_id'))
