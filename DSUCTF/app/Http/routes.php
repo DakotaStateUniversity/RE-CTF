@@ -61,6 +61,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('/ajax/challenge/destroy','ChallengeController@destroy');
     Route::any('/ajax/challenge/modify_hash','ChallengeController@modify_hash');
 
+    Route::any('/ajax/challenge/file_put', 'ChallengeController@file_put');
+    Route::any('/ajax/challenge/file_get', 'ChallengeController@file_get');
+
 
 
 });

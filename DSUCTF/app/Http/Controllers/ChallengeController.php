@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Storage;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -258,6 +259,20 @@ class ChallengeController extends Controller
 
     }
 
+    public function file_get(Request $request)
+    {
+      if(!Auth::Check()){ return -2;}
+      // TODO: Add file retrieval for challenges
+    }
+
+    public function file_put(Request $request)
+    {
+      if(!Auth::Check()){ return -2;}
+      if(!Auth::user()->getAdmin())
+        return -1;
+
+
+    }
     /**
      * Remove the specified resource from storage.
      *

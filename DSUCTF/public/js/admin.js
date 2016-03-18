@@ -3,7 +3,54 @@ $(document).ready(function() {
     // populate category table
     popCategory();
     popChallenge();
+    /*
+      https://github.com/LPology/Simple-Ajax-Uploader
+    */
+    var sizeBox = document.getElementById('sizeBox'), // container for file size info
+        progress = document.getElementById('progressBar'); // the element we're using for a progress bar
+
+    var uploader = new ss.SimpleUpload({
+          button: 'uploadButton', // file upload button
+          url: 'uploadHandler.php', // server side handler
+          name: 'uploadfile', // upload parameter name
+          progressUrl: 'uploadProgress.php', // enables cross-browser progress support (more info below)
+          responseType: 'json',
+          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+          maxSize: 1024, // kilobytes
+          hoverClass: 'ui-state-hover',
+          focusClass: 'ui-state-focus',
+          disabledClass: 'ui-state-disabled',
+          onSubmit: function(filename, extension) {
+              this.setFileSizeBox(sizeBox); // designate this element as file size container
+              this.setProgressBar(progress); // designate as progress bar
+            },
+          onComplete: function(filename, response) {
+              if (!response) {
+                  alert(filename + 'upload failed');
+                  return false;
+              }
+              // do something with response...
+            }
+    });
+
 });
+
+//Helper function for calculation of progress
+function formatFileSize(bytes) {
+    if (typeof bytes !== 'number') {
+        return '';
+    }
+
+    if (bytes >= 1000000000) {
+        return (bytes / 1000000000).toFixed(2) + ' GB';
+    }
+
+    if (bytes >= 1000000) {
+        return (bytes / 1000000).toFixed(2) + ' MB';
+    }
+    return (bytes / 1000).toFixed(2) + ' KB';
+}
+
 ////// Category //////
 function delCategory(catid) {
     $.ajax({
@@ -126,7 +173,7 @@ function popChallenge()
       else {
 
         for (i = 0; i < response.length; i++) {
-            $("#chalsortable").append("<tr data-chalid='" + response[i].challenge_id + "'><td><div id='" + response[i].challenge_id + "'>" + response[i].challenge_name + "</div></td><td style='text-align:right;'><span onclick='delChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-remove'></span><span onclick='loadChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-cog'></span>&nbsp;<span class='glyphicon glyphicon-lock' onClick='loadHash(" + response[i].challenge_id + ")'></span></td>");
+            $("#chalsortable").append("<tr data-chalid='" + response[i].challenge_id + "'><td><div id='" + response[i].challenge_id + "'>" + response[i].challenge_name + "</div></td><td style='text-align:right;'><span onclick='delChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-remove'></span><span onclick='loadChallenge(" + response[i].challenge_id + ")' class='glyphicon glyphicon-cog'></span>&nbsp;<span class='glyphicon glyphicon-lock' onClick='loadHash(" + response[i].challenge_id + ")'></span>&nbsp;<span class='glyphicon glyphicon-cloud-upload' onClick='loadFileModal("+response[i].challenge_id+")'></span></td>");
             $('#' + response[i].challenge_id).editable("/ajax/challenge/modify_name", {
                 id: 'chalid',
                 name: 'name',
@@ -225,6 +272,11 @@ function modifyChallenge()
     }
 
   });
+}
+
+function loadFileModal(chalid)
+{
+  $("#modalUpload").modal("toggle");
 }
 
 function delChallenge(challenge_id) {
