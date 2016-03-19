@@ -11,6 +11,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
+//use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class ChallengeController extends Controller
 {
     /**
@@ -139,6 +141,23 @@ class ChallengeController extends Controller
       return json_encode($challenge);
 
     }
+
+    public function info_files(Request $request)
+    {
+      if(!Auth::Check()){ return -2;}
+      if(empty($request->input('chalid')))
+        return 0;
+      $files = Storage::allFiles("challenges/" . $request->input('chalid'));
+      $i = 0;
+      foreach($files as $file)
+      {
+        $filepieces = explode("/", $file);
+        $files[$i] = $filepieces[2];
+        $i++;
+      }
+      return json_encode($files);
+      //json_encode($files, JSON_UNESCAPED_SLASHES)
+    }
     //This retrieves all information about the challenge, INCLUDING the key/flag
     //It is important that this remains admin-only
     public function data(Request $request)
@@ -259,9 +278,18 @@ class ChallengeController extends Controller
 
     }
 
-    public function file_get(Request $request)
+    public function file_get($chalid, $filename)
     {
       if(!Auth::Check()){ return -2;}
+      if(empty($filename) || empty($chalid))
+        return 0;
+
+      if(!Storage::has("challenges/" . $chalid . "/" . $filename))
+        return "File not found.";
+      $content = Storage::get("challenges/" . $chalid . "/" . $filename);
+      return response($content, 200)
+      ->header('Content-Type', "application/octet-stream");
+
       // TODO: Add file retrieval for challenges
     }
 
@@ -270,6 +298,18 @@ class ChallengeController extends Controller
       if(!Auth::Check()){ return -2;}
       if(!Auth::user()->getAdmin())
         return -1;
+      if(empty($request->input('chalid_file')))
+        return 0;
+      if($request->hasFile('fileUpload'))
+      {
+        $file = $request->file('fileUpload');
+
+      //  $file->move(public_path() . '/challengefiles/' . $request->input('chalid_file'), $file->getClientOriginalName());
+      Storage::put("challenges/" . $request->input('chalid_file') . "/" . $file->getClientOriginalName(), file_get_contents($file));
+      return redirect('admin');
+      }
+      echo "No file received\n";
+      var_dump($request->all());
 
 
     }

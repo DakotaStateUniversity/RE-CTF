@@ -78,6 +78,7 @@ function loadChallenge(chalid)
 {
   currentChallenge = chalid;
   $("#chalAnswer").val("");
+  loadFiles(chalid);
   $("#modalnotice").hide();
   $.ajax({
     url: '/ajax/challenge/info',
@@ -101,6 +102,27 @@ function loadChallenge(chalid)
   });
 }
 
+
+function loadFiles(challenge_id)
+{
+  // /ajax/challenge/info_files
+  $("#filelist").html("");
+  $.ajax({
+    url: '/ajax/challenge/info_files',
+    dataType: 'json',
+    type: 'GET',
+    data: {chalid:challenge_id},
+    success: function(response) {
+      var i;
+      for(i=0; i < response.length; i++)
+      {
+        $("#filelist").append("<a href='/ajax/challenge/file_get/" + challenge_id + "/" + response[i] + "'>"+response[i]+"</a>&nbsp;");
+      }
+      if(response.length == 0)
+        $("#filelist").append("No files exist for this challenge.");
+    }
+  });
+}
 function submitChallenge()
 {
   $.ajax({

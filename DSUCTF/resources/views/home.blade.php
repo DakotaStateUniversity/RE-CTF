@@ -39,6 +39,8 @@
           </div>
           <br>
           <input type="text" class="form-control" id="chalAnswer" placeholder="Enter key/flag">
+          <div id="filelist">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -1,55 +1,25 @@
 var currentChallenge;
+var files;
 $(document).ready(function() {
     // populate category table
     popCategory();
     popChallenge();
-    /*
-      https://github.com/LPology/Simple-Ajax-Uploader
-    */
+
     var sizeBox = document.getElementById('sizeBox'), // container for file size info
         progress = document.getElementById('progressBar'); // the element we're using for a progress bar
-
-    var uploader = new ss.SimpleUpload({
-          button: 'uploadButton', // file upload button
-          url: 'uploadHandler.php', // server side handler
-          name: 'uploadfile', // upload parameter name
-          progressUrl: 'uploadProgress.php', // enables cross-browser progress support (more info below)
-          responseType: 'json',
-          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-          maxSize: 1024, // kilobytes
-          hoverClass: 'ui-state-hover',
-          focusClass: 'ui-state-focus',
-          disabledClass: 'ui-state-disabled',
-          onSubmit: function(filename, extension) {
-              this.setFileSizeBox(sizeBox); // designate this element as file size container
-              this.setProgressBar(progress); // designate as progress bar
-            },
-          onComplete: function(filename, response) {
-              if (!response) {
-                  alert(filename + 'upload failed');
-                  return false;
-              }
-              // do something with response...
-            }
-    });
+    /*
+    $("#fileForm").fileUpload({
+      submitData: {'chalid' : currentChallenge},
+      before: function(){console.log("Uploading...");},
+      beforeSubmit  : function(uploadData){ console.log(uploadData); return true; },
+      success       : function(data, textStatus, jqXHR){ console.log(data); },
+      error         : function(jqXHR, textStatus, errorThrown){ console.log(jqXHR); },
+      complete      : function(jqXHR, textStatus){ console.log(jqXHR); }
+    })
+    */
 
 });
 
-//Helper function for calculation of progress
-function formatFileSize(bytes) {
-    if (typeof bytes !== 'number') {
-        return '';
-    }
-
-    if (bytes >= 1000000000) {
-        return (bytes / 1000000000).toFixed(2) + ' GB';
-    }
-
-    if (bytes >= 1000000) {
-        return (bytes / 1000000).toFixed(2) + ' MB';
-    }
-    return (bytes / 1000).toFixed(2) + ' KB';
-}
 
 ////// Category //////
 function delCategory(catid) {
@@ -276,7 +246,12 @@ function modifyChallenge()
 
 function loadFileModal(chalid)
 {
+  currentChallenge = chalid;
+  loadChallenge(chalid,1);
+  $("#fileName").html(name);
+  $("#chalid_file").val(currentChallenge);
   $("#modalUpload").modal("toggle");
+
 }
 
 function delChallenge(challenge_id) {

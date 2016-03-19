@@ -58,23 +58,21 @@
    <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUpload">
       <div class="modal-dialog" role="document">
          <div class="modal-content">
+           <form id="fileForm" action="/ajax/challenge/file_put" method="post" enctype="multipart/form-data">
             <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               <h4 class="modal-title"><span id="hashName"></span> &middot; Add file to challenge</h4>
+               <h4 class="modal-title"><span id="fileName"></span> &middot; Add file to challenge</h4>
             </div>
             <div class="modal-body">
-              <div class="progress">
-                <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                  0%
-                </div>
-              </div>
-
+               <input type="file" style="color:rgb(129, 129, 129);" id="fileUpload" name="fileUpload">
+               <input type="hidden" name="chalid_file" id="chalid_file">
                <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" onclick="addFile();" class="btn btn-primary">Upload</button>
+                  <input type="submit" onclick="" class="btn btn-primary" name="submit" id="submit" value="Upload">
                </div>
 
             </div>
+          </form>
          </div>
       </div>
    </div>
@@ -107,7 +105,7 @@
                <div class="panel panel-primary">
                   <div class="panel-heading">Manage Challenges</div>
                   <div class="panel-body">
-                     <div>Click on a challenge to modify its name.<br>Challenges are sorted in category by .</div>
+                     <div>Click on a challenge to modify its name.<br></div>
                      <table class="table" >
                         <tr>
                            <th>Challenges</th>
