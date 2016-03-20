@@ -1,5 +1,6 @@
 var currentChallenge;
 var files;
+
 $(document).ready(function() {
     // populate category table
     popCategory();
@@ -178,7 +179,7 @@ function storeChallenge()
   var name;
 function loadChallenge(challenge_id, flag)
 {
-
+  loadFiles(challenge_id)
   if(flag != 1)
     $("#modalChallenge").modal('toggle');
   $.ajax({
@@ -204,6 +205,27 @@ function loadChallenge(challenge_id, flag)
   });
   currentChallenge = challenge_id;
 
+}
+
+function loadFiles(challenge_id)
+{
+  // /ajax/challenge/info_files
+  $("#filelist").html("");
+  $.ajax({
+    url: '/ajax/challenge/info_files',
+    dataType: 'json',
+    type: 'GET',
+    data: {chalid:challenge_id},
+    success: function(response) {
+      var i;
+      for(i=0; i < response.length; i++)
+      {
+        $("#filelist").append("<span class='label label-info'>"+response[i]+"<span style='color:red;' onclick='delFile(\""+response[i]+"\")' class='glyphicon glyphicon-trash'></span></span>&nbsp;");
+      }
+      if(response.length == 0)
+        $("#filelist").append("No files exist for this challenge.");
+    }
+  });
 }
 
 function loadHash(challenge_id)
@@ -265,6 +287,18 @@ function delChallenge(challenge_id) {
         }
     });
 
+}
+
+function delFile(file)
+{
+  $.ajax({
+      url: '/ajax/challenge/file_remove/'+currentChallenge+'/'+file,
+      type: 'GET',
+      success: function(response) {
+          console.log(response);
+          loadFiles();
+      }
+  });
 }
 
 ////// ^Challenge //////

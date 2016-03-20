@@ -28,6 +28,10 @@
                   <input type="text" class="form-control" id="modal_value" placeholder="ex: 500">
                   <div class="input-group-addon"> points.</div>
                </div>
+               <br>
+               Files:
+               <div id="filelist">
+               </div>
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

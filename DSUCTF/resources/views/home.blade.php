@@ -30,17 +30,20 @@
           <br>
           <br>
           <p id="description"></p>
+          Files:
+          <div id="filelist">
+          </div>
           <br>
+
           <div class="input-group" style="width:52%;">
             <div class="input-group-addon">This challenge is worth </div>
             <input type="text" class="form-control" disabled id="challengeValue">
             <div class="input-group-addon"> points.</div>
 
           </div>
+
           <br>
           <input type="text" class="form-control" id="chalAnswer" placeholder="Enter key/flag">
-          <div id="filelist">
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

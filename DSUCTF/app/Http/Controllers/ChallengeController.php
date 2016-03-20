@@ -313,6 +313,20 @@ class ChallengeController extends Controller
 
 
     }
+
+    public function file_remove($chalid, $filename)
+    {
+      if(!Auth::Check()){ return -2;}
+      if(!Auth::user()->getAdmin())
+        return -1;
+      if(empty($filename) || empty($chalid))
+        return 0;
+
+      Storage::delete("challenges/" . $chalid . "/" . $filename);
+
+      return $filename . " has been deleted.";
+
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -326,7 +340,7 @@ class ChallengeController extends Controller
           return -1;
         if(empty($request->input('challenge_id')))
           return 0;
-
+        Storage::deleteDirectory("challenges/" . $request->input('challenge_id'));
         DB::table('attempt_log')
         ->where('challenge_id', $request->input('challenge_id'))
         ->delete();

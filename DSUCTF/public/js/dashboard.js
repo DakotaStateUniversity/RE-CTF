@@ -116,7 +116,7 @@ function loadFiles(challenge_id)
       var i;
       for(i=0; i < response.length; i++)
       {
-        $("#filelist").append("<a href='/ajax/challenge/file_get/" + challenge_id + "/" + response[i] + "'>"+response[i]+"</a>&nbsp;");
+        $("#filelist").append("<a class='label label-info' href='/ajax/challenge/file_get/" + challenge_id + "/" + response[i] + "'>"+response[i]+"</a>&nbsp;");
       }
       if(response.length == 0)
         $("#filelist").append("No files exist for this challenge.");
