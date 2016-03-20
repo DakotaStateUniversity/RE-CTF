@@ -290,7 +290,6 @@ class ChallengeController extends Controller
       return response($content, 200)
       ->header('Content-Type', "application/octet-stream");
 
-      // TODO: Add file retrieval for challenges
     }
 
     public function file_put(Request $request)
