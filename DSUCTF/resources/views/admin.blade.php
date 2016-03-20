@@ -131,8 +131,6 @@
                      <select id="category_id">
                      </select>
                      <br>
-                     <input type="file" style="color:gray;" id="fileUpload">
-                     <br>
                      <label for="description">Description:</label>
                      <br>
                      <textarea class="form-control" id="description"></textarea>
