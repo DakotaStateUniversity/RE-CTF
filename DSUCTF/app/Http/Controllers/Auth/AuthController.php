@@ -71,7 +71,7 @@ class AuthController extends Controller
             $val = 1;
         }
         return User::create([
-            'name' => $data['name'],
+            'name' => htmlspecialchars($data['name']),
             'email' => $data['email'],
             'IsStudent' => $val,
             'IsAdmin' => 0,

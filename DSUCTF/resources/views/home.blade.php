@@ -53,13 +53,11 @@
     </div>
 </div>
 <div class="container">
+
     <div class="row">
         <div id="catcontainer" class="col-md-12 col-md-offset-1">
 
 
-        </div>
-        <div class="col-md-12">
-          Challenges not loading? Try refreshing the page.
         </div>
 
     </div>
