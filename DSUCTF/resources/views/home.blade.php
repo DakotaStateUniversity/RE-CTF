@@ -53,7 +53,9 @@
     </div>
 </div>
 <div class="container">
-
+    <div class="row">
+      <div class="col-md-12 alert alert-info" id="compstatus"></div>
+    </div>
     <div class="row">
         <div id="catcontainer" class="col-md-12 col-md-offset-1">
 

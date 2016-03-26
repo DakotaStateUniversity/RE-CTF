@@ -13,7 +13,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     @yield('otherresources')
@@ -85,4 +85,7 @@
 
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 </body>
+
+<link rel="stylesheet" type="text/css" href="/css/jquery.datetimepicker.css"/ >
+<script src="/js/jquery.datetimepicker.full.min.js"></script>
 </html>

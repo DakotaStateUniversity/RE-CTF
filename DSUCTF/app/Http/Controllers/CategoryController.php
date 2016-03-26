@@ -19,6 +19,11 @@ class CategoryController extends Controller
     {
         //
         if(!Auth::Check()){ return -2;}
+        if(app('App\Http\Controllers\CompetitionController')->available() != 1)
+        {
+          if(!Auth::user()->getAdmin())
+            return "Not available";
+        }
         $categories = DB::table('category')
         ->orderBy('level')
         ->get();

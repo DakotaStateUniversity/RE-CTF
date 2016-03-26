@@ -43,7 +43,8 @@ class ChallengeController extends Controller
       if(!Auth::Check()){ return -2;}
       if(empty($request->input('challenge_id')) || empty($request->input('answer')) )
         return "Please type in a key/flag.";
-
+      if(app('App\Http\Controllers\CompetitionController')->available() != 1)
+        return "Not available.";
       // Get the related challenge
       $challenge = DB::table('challenge')
       ->where('challenge_id','=',$request->input('challenge_id'))
@@ -82,6 +83,11 @@ class ChallengeController extends Controller
     public function listall()
     {
       if(!Auth::Check()){ return -2;}
+      if(app('App\Http\Controllers\CompetitionController')->available() != 1)
+      {
+        if(!Auth::user()->getAdmin())
+          return "Not available";
+      }
       $challenges = DB::table('challenge')
       ->orderBy('value')
       ->get();
@@ -147,6 +153,11 @@ class ChallengeController extends Controller
       if(!Auth::Check()){ return -2;}
       if(empty($request->input('chalid')))
         return 0;
+      if(app('App\Http\Controllers\CompetitionController')->available() != 1)
+      {
+        if(!Auth::user()->getAdmin())
+          return "Not available";
+      }
       $files = Storage::allFiles("challenges/" . $request->input('chalid'));
       $i = 0;
       foreach($files as $file)
@@ -283,7 +294,11 @@ class ChallengeController extends Controller
       if(!Auth::Check()){ return -2;}
       if(empty($filename) || empty($chalid))
         return 0;
-
+      if(app('App\Http\Controllers\CompetitionController')->available() != 1)
+      {
+        if(!Auth::user()->getAdmin())
+          return "Not available";
+      }
       if(!Storage::has("challenges/" . $chalid . "/" . $filename))
         return "File not found.";
       $content = Storage::get("challenges/" . $chalid . "/" . $filename);

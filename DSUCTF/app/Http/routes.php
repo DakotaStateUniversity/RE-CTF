@@ -66,8 +66,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('/ajax/challenge/file_remove/{chalid}/{filename}', ['uses' => 'ChallengeController@file_remove']);
     Route::any('/ajax/challenge/info_files', 'ChallengeController@info_files');
 
-
-
+    Route::any('/ajax/competition/available', 'CompetitionController@available');
+    Route::any('/ajax/competition/update_time', 'CompetitionController@update_time');
+    Route::any('/ajax/competition/start_time', 'CompetitionController@start_time');
+    Route::any('/ajax/competition/end_time', 'CompetitionController@end_time');
 
 
 

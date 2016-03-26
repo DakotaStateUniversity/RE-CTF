@@ -85,7 +85,23 @@
          <div class="panel panel-default">
             <div class="panel-heading">Control Panel</div>
             <div class="panel-body">
-               <i>You may make changes to control the competition here.</i>
+               <i>You may make changes to control the competition here. All changes are updated by ajax.</i>
+
+               <div class="panel panel-primary">
+                  <div class="panel-heading">Manage Competition</div>
+                  <div class="panel-body">
+                     <p>With no start time set, users will be able to access challenges at any time before the end time. <br>If an end time is set, users will not be able to complete challenges after the set date.</p>
+                     <p>If you set a start time past the end time, the end time will be set to null.</p>
+                     <label for="competition_start" type="text" class="text">Start Time:</label>
+                     <input id="competition_start" style="margin-left:3px;" type="text" class="text">
+                     <br>
+                     <label for="competition_end" type="text" class="text">End Time:</label>
+                     <input id="competition_end" style="margin-left:10px;" type="text" class="text">
+                     <br>
+                     <button type="button" style="margin-left:185px;" onclick="updateTime();" class="btn btn-info btn-md">Update</button>
+                  </div>
+               </div>
+
                <div class="panel panel-primary">
                   <div class="panel-heading">Manage Categories</div>
                   <div class="panel-body">
@@ -106,6 +122,7 @@
                      <br>
                   </div>
                </div>
+
                <div class="panel panel-primary">
                   <div class="panel-heading">Manage Challenges</div>
                   <div class="panel-body">
@@ -143,10 +160,13 @@
                      <br>
                   </div>
                </div>
+
             </div>
          </div>
       </div>
    </div>
 </div>
+<script type="text/javascript" src="/js/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript" src="/js/admin.js"></script>
+
 @endsection

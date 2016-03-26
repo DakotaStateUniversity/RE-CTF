@@ -3,12 +3,36 @@ var currentChallenge;
 var itemList = [];
 var totalCat = 0;
 var hiddenCat = 0;
+var started = 0;
 $(document).ready(function() {
+    $("#compstatus").hide();
     $("#modalnotice").hide();
-    popCategory();
+    checkStatus();
+
 });
 
+function checkStatus()
+{
+  $.ajax({
+    url: '/ajax/competition/available',
+    success: function(response) {
+      console.log(response);
+      if(response != '1')
+      {
+        $("#compstatus").html(response);
+        $("#compstatus").show();
+      } else {
+        started = 1;
+      }
+      popCategory();
+    }
+
+  })
+}
+
 function popCategory() {
+    if(started == 0)
+      return;
     $.ajax({
         url: '/ajax/category',
         dataType: 'json',
@@ -31,6 +55,8 @@ function popCategory() {
 }
 
 function popChallenge() {
+  if(started == 0)
+    return;
     $.ajax({
         url: '/ajax/challenge/listall',
         dataType: 'json',
