@@ -35,6 +35,16 @@ class CompetitionController extends Controller
         $now = new Carbon();
         if($now->between($cstart, $cend))
           return 1;
+        else {
+          // Now we check if it's before or after the competition
+          $msg = "";
+          if($cend->lte(Carbon::now()))
+            $msg = "The competition ended at " . $dbend->val_datetime;
+          else
+            $msg = "The competition does not start until " . $dbstart->val_datetime;
+          return $msg;
+        }
+
       }
       if($endclear == 0)
       {
@@ -47,7 +57,7 @@ class CompetitionController extends Controller
       {
         $cstart = new Carbon($dbstart->val_datetime);
         if($cstart->lte(Carbon::now()))
-          $startclear = 1;
+          return 1;
         return "The competition does not start until " . $cstart;
       }
 
