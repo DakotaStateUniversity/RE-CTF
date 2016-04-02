@@ -7,6 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
                 <div class="panel-body">
+
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {!! csrf_field() !!}
 
@@ -81,6 +82,20 @@
                             </div>
                         </div>
                     </form>
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label"></label>
+
+                        <div class="col-md-6">
+                          Your password must contain characters from at least three of the following five categories
+                          <ul>
+                            <li>English uppercase characters (A – Z)</li>
+                            <li>English lowercase characters (a – z)</li>
+                            <li>Numbers 0-9</li>
+                            <li>Special Characters <b>(</b>!@#$%^&*()<b>)</b></li>
+                          </ul>
+                          It must also be 6 characters or longer.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

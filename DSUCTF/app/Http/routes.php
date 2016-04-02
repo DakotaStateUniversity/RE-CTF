@@ -19,7 +19,9 @@ Route::get('/debug', function() {
   return view('debug');
 });
 
-
+Route::any('/index.php', function() {
+  return redirect('/home');
+});
 
 /*
 |--------------------------------------------------------------------------
