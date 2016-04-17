@@ -8,7 +8,6 @@ $(document).ready(function() {
     $("#compstatus").hide();
     $("#modalnotice").hide();
     checkStatus();
-
 });
 
 function checkStatus()
@@ -106,6 +105,24 @@ function loadChallenge(chalid)
   $("#chalAnswer").val("");
   loadFiles(chalid);
   $("#modalnotice").hide();
+  // Get challenge info
+  $.ajax({
+    url: '/ajax/stats/challenge_info/' + chalid,
+    dataType: 'json',
+    type: 'GET',
+    success: function(response) {
+      var good = response[0].good;
+      var bad = response[0].bad;
+
+      var percent = good/(good + bad);
+      percent = (percent*100).toFixed(1);
+
+      $("#percent").html(percent);
+      $("#bar").attr("style","width:"+percent+"%;");
+      $("#usercount").html(good);
+
+    }
+  });
   $.ajax({
     url: '/ajax/challenge/info',
     dataType: 'json',
@@ -126,6 +143,7 @@ function loadChallenge(chalid)
 
     }
   });
+
 }
 
 

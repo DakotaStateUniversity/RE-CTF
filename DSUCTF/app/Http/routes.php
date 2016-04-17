@@ -38,7 +38,6 @@ Route::group(['middleware' => 'web'], function () {
   // Scoreboard
     Route::get('/scoreboard','ScoreController@scoreview');
     Route::get('/ajax/score/board', 'ScoreController@scoreboard');
-    Route::auth();
     Route::get('/ajax/score/total', 'ScoreController@totalscore');
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
@@ -72,6 +71,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('/ajax/competition/update_time', 'CompetitionController@update_time');
     Route::any('/ajax/competition/start_time', 'CompetitionController@start_time');
     Route::any('/ajax/competition/end_time', 'CompetitionController@end_time');
+
+    // Statistics
+    Route::any('/ajax/stats/challenge_info/{chalid}', ['uses' => 'StatsController@challenge_info']);
 
 
 

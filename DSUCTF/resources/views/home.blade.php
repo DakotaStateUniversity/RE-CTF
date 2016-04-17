@@ -33,7 +33,7 @@
           Files:
           <div id="filelist">
           </div>
-          <br>
+
 
           <div class="input-group" style="width:52%;">
             <div class="input-group-addon">This challenge is worth </div>
@@ -44,6 +44,14 @@
 
           <br>
           <input type="text" class="form-control" id="chalAnswer" placeholder="Enter key/flag">
+          <br>
+          <div class="progress">
+            &nbsp;Attempts Successful(green)
+            <div id="bar" class="progress-bar progress-bar-success" role="progressbar">
+              <span id="percent"></span>%
+            </div>
+          </div>
+          Challenge has been completed by <span id="usercount"></span> users.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -64,4 +72,5 @@
 
     </div>
 </div>
+
 @endsection
