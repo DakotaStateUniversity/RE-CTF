@@ -56,24 +56,33 @@ class ChallengeController extends Controller
       ->where('result','=',1)
       ->count();
       if($challengesuccess > 0)
-      {
         return "You have already completed this challenge.";
-      }
+      
 
       $currentTime = Carbon::now()->toDateTimeString();
       if(password_verify($request->input('answer'), $challenge->key))
       {
+        // Calculate challenge reward
+        $reward = $challenge->value;
+        $dbend = DB::table('config')->where('name','=','competition_end')->first();
+        if($dbend->val_datetime != '0000-00-00 00:00:00') // if a time based reward exists
+        {
+          $cend = new Carbon($dbend->val_datetime);
+          $minutes = Carbon::now()->diffInMinutes($cend);
+          $reward = $reward * $minutes;
+        }
+
         DB::table('attempt_log')->insert(
-        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 1]
+        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 1, 'points_earned' => $reward]
         );
-        return "You have successfully completed this challenge!";
+        return "You have successfully completed this challenge! You have earned " . $reward . " points!";
       }
-      else {
-        DB::table('attempt_log')->insert(
-        ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 0]
-        );
-        return "Your answer did not match the flag.";
-      }
+      // else
+      DB::table('attempt_log')->insert(
+      ['user_id' => Auth::user()->id, 'datetime' => $currentTime, 'challenge_id' => $request->input('challenge_id') , 'result' => 0]
+      );
+      return "Your answer did not match the flag.";
+      
 
 
 

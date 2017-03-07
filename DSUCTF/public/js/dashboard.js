@@ -48,7 +48,7 @@ function popCategory() {
                     itemList[response[i].category_id] = 0;
                 }
             }
-	popChallenge();
+	        popChallenge();
         }
     });
 }
@@ -176,7 +176,7 @@ function submitChallenge()
     success: function(response) {
       console.log(response);
       $("#modalnotice").html(response);
-      if(response == "You have successfully completed this challenge!")
+      if(response != "Your answer did not match the flag.")
       {
         $("#modalnotice").attr("class", "alert alert-success");
       }

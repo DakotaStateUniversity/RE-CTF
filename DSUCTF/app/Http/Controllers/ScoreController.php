@@ -27,11 +27,8 @@ class ScoreController extends Controller
     $totalscore = 0;
     foreach($completed as $complete)
     {
-      $chal = DB::table('challenge')
-      ->where('challenge_id', '=', $complete->challenge_id)
-      ->first();
-      $totalscore += $chal->value;
-    }
+      $totalscore += $complete->points_earned;
+    } 
     return $totalscore;
   }
 

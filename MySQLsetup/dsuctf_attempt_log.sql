@@ -31,7 +31,7 @@ CREATE TABLE `attempt_log` (
   `datetime` datetime NOT NULL,
   `challenge_id` int(11) NOT NULL,
   PRIMARY KEY (`attempt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
