@@ -4,6 +4,7 @@ var itemList = [];
 var totalCat = 0;
 var hiddenCat = 0;
 var started = 0;
+var modifier = 0;
 $(document).ready(function() {
     $("#compstatus").hide();
     $("#modalnotice").hide();
@@ -22,12 +23,29 @@ function checkStatus()
         $("#compstatus").show();
       } else {
         started = 1;
+        popModifier();
       }
       popCategory();
     }
 
   })
 }
+
+function popModifier()
+{
+  $.ajax({
+    url: '/ajax/score/modifier',
+    success: function(response) {
+      $("#compstatus").html("The competition is live! The current score modifier is " + commaSeparateNumber(response) + ".");
+      $("#compstatus").show();
+      modifier = response;
+      //console.log(commaSeparateNumber(response));
+      setTimeout(popModifier, 30000);
+    }
+  });
+}
+
+
 
 function popCategory() {
     if(started == 0)
@@ -186,4 +204,14 @@ function submitChallenge()
       $("#modalnotice").show("slow");
     }
   });
+}
+
+/* Used a quick solution located at:
+http://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
+*/
+function commaSeparateNumber(val){
+    while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+    }
+    return val;
 }

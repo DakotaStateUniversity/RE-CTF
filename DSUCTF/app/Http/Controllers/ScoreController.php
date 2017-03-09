@@ -64,6 +64,20 @@ class ScoreController extends Controller
     echo json_encode($userlist);
   }
 
+  public function modifier()
+  {
+    $currentTime = Carbon::now()->toDateTimeString();
+    $dbend = DB::table('config')->where('name','=','competition_end')->first();
+    if($dbend->val_datetime != '0000-00-00 00:00:00') // if a time based reward exists
+    {
+      $cend = new Carbon($dbend->val_datetime);
+      $minutes = Carbon::now()->diffInMinutes($cend);
+      echo $minutes;
+      return;
+    }
+    echo 1;
+  }
+
   public static function usercompare($u1, $u2)
   {
     if($u1->score == $u2->score)

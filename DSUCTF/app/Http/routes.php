@@ -39,6 +39,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/scoreboard','ScoreController@scoreview');
     Route::get('/ajax/score/board', 'ScoreController@scoreboard');
     Route::get('/ajax/score/total', 'ScoreController@totalscore');
+    Route::get('/ajax/score/modifier', 'ScoreController@modifier');
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
 
